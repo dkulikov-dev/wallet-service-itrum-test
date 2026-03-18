@@ -2,12 +2,7 @@ spring:
   application:
     name: wallet-service
 
-  datasource:
-    url: jdbc:postgresql://localhost:5432/wallet_db
-    username: wallet_user
-    password: wallet_pass
-    driver-class-name: org.postgresql.Driver
-
+  # Общие настройки для всех профилей
   jpa:
     hibernate:
       ddl-auto: none
@@ -16,5 +11,30 @@ spring:
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.yaml
 
-server:
-  port: 8080
+  # Профиль по умолчанию при локальном запуске
+  profiles:
+    active: local
+
+---
+# Локальный профиль
+spring:
+  config:
+    activate:
+      on-profile: local
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/wallet_db
+    username: wallet_user
+    password: wallet_pass
+
+---
+# DOCKER профиль
+spring:
+  config:
+    activate:
+      on-profile: docker
+
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST:postgres}:${POSTGRES_PORT:5432}/${POSTGRES_DB:wallet_db}
+    username: ${POSTGRES_USER:wallet_user}
+    password: ${POSTGRES_PASSWORD:wallet_pass}
