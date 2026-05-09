@@ -33,8 +33,20 @@ spring:
   config:
     activate:
       on-profile: docker
-
   datasource:
     url: jdbc:postgresql://${POSTGRES_HOST:postgres}:${POSTGRES_PORT:5432}/${POSTGRES_DB:wallet_db}
     username: ${POSTGRES_USER:wallet_user}
     password: ${POSTGRES_PASSWORD:wallet_pass}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+  endpoint:
+    health:
+      show-details: always
+      probes:
+        enabled: true
+  prometheus:
+    enabled: true

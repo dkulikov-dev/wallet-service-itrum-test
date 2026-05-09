@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-add-user-id-to-wallets
+      author: dkulikov
+      changes:
+        - addColumn:
+            tableName: wallets
+            columns:
+              - column:
+                  name: user_id
+                  type: uuid
+                  constraints:
+                    foreignKeyName: fk_wallet_user
+                    references: users(id)
+                    nullable: true  # nullable, т.к. старые кошельки без user

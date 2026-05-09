@@ -48,12 +48,14 @@ databaseChangeLog:
                   type: uuid
                   constraints:
                     nullable: false
+                    foreignKeyName: fk_transaction_wallet
                     references: wallets(id)
               - column:
                   name: user_id
                   type: uuid
                   constraints:
                     nullable: false
+                    foreignKeyName: fk_transaction_user
                     references: users(id)
               - column:
                   name: operation_type
@@ -76,14 +78,3 @@ databaseChangeLog:
                   defaultValueComputed: CURRENT_TIMESTAMP
                   constraints:
                     nullable: false
-
-        # 3. Добавляем связь wallet → user
-        - addColumn:
-            tableName: wallets
-            columns:
-              - column:
-                  name: user_id
-                  type: uuid
-                  constraints:
-                    nullable: true
-                    references: users(id)
