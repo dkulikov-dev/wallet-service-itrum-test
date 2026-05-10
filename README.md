@@ -38,3 +38,31 @@ GET/api/v1/wallets/{walletId} — получение баланса
 404 — кошелёк не найден
 409 — недостаточно средств
 400 — невалидный запрос
+
+## 📊 Мониторинг
+
+### Grafana Dashboard
+
+![Grafana Dashboard](docs/images/grafana-dashboard.png)
+
+**Доступные метрики:**
+- ✅ Request Rate (запросов в секунду)
+- ✅ Error Rate (5xx ошибки)
+- ✅ Average Response Time (p95)
+- ✅ JVM Heap Memory
+- ✅ Active DB Connections (HikariCP)
+- ✅ Uptime приложения
+
+**URL доступа (после `docker compose up`):**
+| Сервис | URL | Логин/пароль |
+|--------|-----|--------------|
+| Grafana | http://localhost:3000 | admin / admin |
+| Prometheus | http://localhost:9090 | — |
+| Приложение | http://localhost:8080 | — |
+
+**Пример запроса для генерации метрик:**
+```bash
+curl.exe http://localhost:8080/api/v1/wallets/11111111-1111-1111-1111-111111111111
+curl -X POST http://localhost:8080/api/v1/wallet \
+  -H "Content-Type: application/json" \
+  -d '{"walletId":"...","operationType":"DEPOSIT","amount":100}'
